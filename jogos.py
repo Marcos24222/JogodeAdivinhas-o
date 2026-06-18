@@ -14,4 +14,4 @@ if(numerosecreto == chuteNumerico):
 else:
     print("Você errou!")
 
-print("Fim de Jogo")
+print("Fim de Jo")
