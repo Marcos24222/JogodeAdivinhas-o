@@ -9,9 +9,11 @@ print("você digitou;" ,chute )
 
 chuteNumerico = int(chute)
 
+acertou = chuteNumerico == numerosecreto
+
 if(numerosecreto == chuteNumerico):
   print("Você acertou!")
 else:
     print("Você errou!")
 
-print("Fim de Jo")
+print("Fim de Jogo")
