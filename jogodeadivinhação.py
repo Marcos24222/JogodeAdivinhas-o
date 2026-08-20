@@ -1,6 +1,9 @@
 import random
 
-print("********************************")
+from jogodaforca import jogar
+
+def jogar():
+    print("********************************")
 print("Bem-vindo ao Jogo de Adivinhação")
 print("********************************")
 
@@ -55,3 +58,4 @@ while tentativas_restantes > 0:
         break
 
 print(f"Sua pontuação final é: {pontos}")
+jogar ()

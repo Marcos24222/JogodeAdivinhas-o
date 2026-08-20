@@ -1,70 +1,62 @@
-# Jogo da forca
+
 import random
-from desenhojogo import desenhoforca, mensagem_perdedor, mensagem_vencedor
+from desenhojogo import desenhar_forca, mensagem_vencedor, mensagem_perdedor
 
-print("*********************************")
-print("Bem vindo ao jogo da Forca")
-print("*********************************")
+def jogar():
+    # Jogo da forca
+    print("********************************")
+    print("Bem vindo ao jogo da Forca")
+    print("********************************")
 
-# Carrega palavras do arquivo
-with open("palavrasecreta.txt", "r", encoding="utf-8") as arquivo:
-    palavras = [palavra.strip().upper() for palavra in arquivo.readlines()]
+    # Lendo arquivo de palavras
+    palavras = []
 
-palavrasecreta = random.choice(palavras)
-letrasacertadas = ["_"] * len(palavrasecreta)
-total_tentativas = 6
+    with open("palavrasecreta.txt", "r") as arquivo:
+        for linha in arquivo:
+            palavras.append(linha.strip().upper())
 
-enforcou = False
-acertou = False 
-tentativas = 0
-letras_usadas = []
+    numero = random.randrange(0, len(palavras))
 
-print("A palavra secreta tem {} letras".format(len(palavrasecreta)))
-print(desenhoforca(tentativas))
-print(" ".join(letrasacertadas))
-desenhoforca(tentativas)
+    # Configurações do jogo
+    palavrasecreta = palavras[numero].upper()
+    letrasacertadas = ["_"] * len(palavrasecreta)
+    total_tentativas = len(palavrasecreta)
 
-while(not enforcou and not acertou):
-    chute = input("\nDigite uma letra: ")
-    chute = chute.strip().upper()
-    
-    if not chute or len(chute) != 1 or not chute.isalpha():
-        print("Por favor, digite uma letra válida!")
-        continue
-    
-    if chute in letras_usadas:
-        print("Você já tentou essa letra!")
-        continue
-    
-    letras_usadas.append(chute)
+    enforcou = False
+    acertou = False
+    tentativas = 0
 
-    if (chute in palavrasecreta):
-        index = 0
-        for letra in palavrasecreta:
-            if(chute == letra):
-                letrasacertadas[index] = letra
-            index = index + 1
-        print("Acertou! A letra '{}' está na palavra.".format(chute))
-    else:
-        tentativas += 1
-        print("Errou! A letra '{}' não está na palavra.".format(chute))
+    print("A palavra secreta tem {} letras".format(len(palavrasecreta)))
+    print(letrasacertadas)
+    desenhar_forca(tentativas)
+   
+    # Loop principal do jogo
+    while(not enforcou and not acertou and tentativas < total_tentativas):
+        chute = input("Digite uma letra? ")
+        chute = chute.strip().upper()
 
-    enforcou = tentativas == total_tentativas
-    acertou = "_" not in letrasacertadas
-    
-    print(desenhoforca(tentativas))
-    print(" ".join(letrasacertadas))
-    print("Letras usadas:", ", ".join(letras_usadas))
-    print("Tentativas restantes:", total_tentativas - tentativas)
+        if (chute in palavrasecreta):
+            index = 0
+            for letra in palavrasecreta:
+                if(chute == letra):
+                    letrasacertadas[index] = letra
+                    print("Encontrei a letra {} na posição {}".format(letra, index))
+                index = index + 1
+        else:
+            tentativas += 1
+            desenhar_forca(tentativas)
 
-# Verifica se o jogador ganhou ou perdeu
-if (acertou):
-    print("\nParabéns, você ganhou!")
-    print("A palavra era: {}".format(palavrasecreta))
-    mensagem_vencedor()
-elif (enforcou):
-    print("\nVocê perdeu!")
-    print("A palavra era: {}".format(palavrasecreta))
-    mensagem_perdedor(palavrasecreta)
+        enforcou = tentativas == total_tentativas
+        acertou = "_" not in letrasacertadas
+        print("Letras acertadas:", letrasacertadas)
+        print("Tentativas usadas:", tentativas)
 
-print("Fim do jogo")
+        # Verifica se o jogador ganhou ou perdeu
+        if acertou:
+            mensagem_vencedor()
+        elif enforcou:
+            mensagem_perdedor(palavrasecreta)
+
+    print("Fim do jogo")
+if __name__ == "__main__":
+    jogar()
