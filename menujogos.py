@@ -17,4 +17,5 @@ def escolherjogo():
         case 2:
             from jogodeadivinhação import jogar
             jogar()
-            escolherjogo()
+if __name__ == "__main__":
+    escolherjogo()
